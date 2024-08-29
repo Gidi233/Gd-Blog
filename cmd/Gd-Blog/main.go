@@ -5,9 +5,18 @@
 
 package main
 
-import "fmt"
+import (
+	"os"
+
+	_ "go.uber.org/automaxprocs/maxprocs"//程序自动设置 GOMAXPROCS 以匹配 Linux 容器 CPU 配额。
+
+	"github.com/Gidi233/Gd-Blog/internal/GdBlog"
+)
 
 // program entry function
 func main() {
-	fmt.Println("Hello Blog")
+	command := GdBlog.NewGdBlogCommand()
+	if err := command.Execute(); err != nil {
+		os.Exit(1)
+	}
 }

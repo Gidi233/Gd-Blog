@@ -8,7 +8,7 @@ package main
 import (
 	"os"
 
-	_ "go.uber.org/automaxprocs/maxprocs"//程序自动设置 GOMAXPROCS 以匹配 Linux 容器 CPU 配额。
+	_ "go.uber.org/automaxprocs/maxprocs" //程序自动设置 GOMAXPROCS 以匹配 Linux 容器 CPU 配额。
 
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog"
 )

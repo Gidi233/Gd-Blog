@@ -1,0 +1,18 @@
+# Copyright Gidi233 <qpbtyfh@gmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file. The original repo for
+# this file is https://github.com/Gidi233/Gd-Blog.
+
+
+
+# MySQL 数据库相关配置
+db:
+  host: 127.0.0.1  
+  username: root
+  password: "123456" 
+  database: blog 
+  max-idle-connections: 100 
+  max-open-connections: 100 
+  max-connection-life-time: 10s 
+  log-level: 4 # GORM log level, 1: silent, 2:error, 3:warn, 4:info
+

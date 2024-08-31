@@ -6,10 +6,11 @@
 package GdBlog
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -48,8 +49,19 @@ func initConfig() {
 	viper.SetEnvKeyReplacer(replacer)
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		log.Errorw("Failed to read viper configuration file", "err", err)
 	}
 
-	fmt.Fprintln(os.Stdout, "Using config file:", viper.ConfigFileUsed())
+	log.Infow("Using config file", "file", viper.ConfigFileUsed())
+}
+
+// logOptions 从 viper 中读取日志配置
+func logOptions() *log.Options {
+	return &log.Options{
+		DisableCaller:     viper.GetBool("log.disable-caller"),
+		DisableStacktrace: viper.GetBool("log.disable-stacktrace"),
+		Level:             viper.GetString("log.level"),
+		Format:            viper.GetString("log.format"),
+		OutputPaths:       viper.GetStringSlice("log.output-paths"),
+	}
 }

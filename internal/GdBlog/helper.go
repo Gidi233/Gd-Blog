@@ -51,8 +51,8 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Errorw("Failed to read viper configuration file", "err", err)
 	}
+	log.Debugw("Using config file", "file", viper.ConfigFileUsed())
 
-	log.Infow("Using config file", "file", viper.ConfigFileUsed())
 }
 
 // logOptions 从 viper 中读取日志配置

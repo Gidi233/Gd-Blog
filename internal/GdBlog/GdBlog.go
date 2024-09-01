@@ -10,6 +10,7 @@ import (
 	"fmt"
 
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
+	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -32,6 +33,8 @@ Find more Gd-Blog information at:
 		// specify the run function to execute when cmd.Execute() is called
 		// if the function fails, an error message will be returned
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// 如果 `--version=true`，则打印版本并退出
+			verflag.PrintAndExitIfRequested()
 			log.Init(logOptions())
 			defer log.Sync()
 
@@ -52,6 +55,8 @@ Find more Gd-Blog information at:
 	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "The path to the miniblog configuration file. Empty string for no configuration file.")
 
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	verflag.AddFlags(cmd.PersistentFlags())
 
 	return cmd
 }

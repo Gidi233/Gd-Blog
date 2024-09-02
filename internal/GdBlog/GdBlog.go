@@ -6,11 +6,13 @@
 package GdBlog
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
+	"net/http"
 
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -62,8 +64,23 @@ Find more Gd-Blog information at:
 }
 
 func run() error {
-	settings, _ := json.Marshal(viper.AllSettings())
-	log.Infow(string(settings))
-	log.Infow(viper.GetString("db.username"))
+	gin.SetMode(viper.GetString("runmode"))
+
+	g := gin.New()
+
+	g.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"code": 10003, "message": "Page not found."})
+	})
+
+	g.GET("/healthz", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+	})
+
+	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
+
+	log.Infow("Start to listening the incoming requests on http address", "addr", viper.GetString("addr"))
+	if err := httpsrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		log.Fatalw(err.Error())
+	}
 	return nil
 }

@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
+	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -68,11 +69,15 @@ func run() error {
 
 	g := gin.New()
 
+	mws := []gin.HandlerFunc{gin.Recovery(), mw.NoCache, mw.Cors, mw.Secure, mw.RequestID()}
+	g.Use(mws...)
+
 	g.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"code": 10003, "message": "Page not found."})
 	})
 
 	g.GET("/healthz", func(c *gin.Context) {
+		log.C(c).Infow("Healthz function called")
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 

@@ -6,9 +6,11 @@
 package log
 
 import (
+	"context"
 	"sync"
 	"time"
 
+	"github.com/Gidi233/Gd-Blog/internal/pkg/known"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -139,4 +141,25 @@ func Fatalw(msg string, keysAndValues ...interface{}) {
 
 func (l *zapLogger) Fatalw(msg string, keysAndValues ...interface{}) {
 	l.z.Sugar().Fatalw(msg, keysAndValues...)
+}
+
+// C 解析传入的 context，尝试提取关注的键值，并添加到 zap.Logger 结构化日志中.
+func C(ctx context.Context) *zapLogger {
+	return std.C(ctx)
+}
+
+func (l *zapLogger) C(ctx context.Context) *zapLogger {
+	lc := l.clone()
+
+	if requestID := ctx.Value(known.XRequestIDKey); requestID != nil {
+		lc.z = lc.z.With(zap.Any(known.XRequestIDKey, requestID))
+	}
+
+	return lc
+}
+
+// 深拷贝
+func (l *zapLogger) clone() *zapLogger {
+	lc := *l
+	return &lc
 }

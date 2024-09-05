@@ -6,9 +6,14 @@
 package GdBlog
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
@@ -83,9 +88,27 @@ func run() error {
 
 	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
 
-	log.Infow("Start to listening the incoming requests on http address", "addr", viper.GetString("addr"))
-	if err := httpsrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		log.Fatalw(err.Error())
+	go func() {
+		if err := httpsrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalw(err.Error())
+		}
+	}()
+
+	quit := make(chan os.Signal,1)
+	// SIGKILL 信号，不能被捕获，所以不需要添加
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM) 
+	<-quit                                               
+	log.Infow("Shutting down server ...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := httpsrv.Shutdown(ctx); err != nil {
+		log.Errorw("Insecure Server forced to shutdown", "err", err)
+		return err
 	}
+
+	log.Infow("Server exiting")
+
 	return nil
 }

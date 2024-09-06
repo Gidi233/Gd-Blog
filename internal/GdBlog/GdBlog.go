@@ -15,6 +15,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Gidi233/Gd-Blog/internal/pkg/core"
+	"github.com/Gidi233/Gd-Blog/internal/pkg/errno"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
@@ -78,12 +80,12 @@ func run() error {
 	g.Use(mws...)
 
 	g.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"code": 10003, "message": "Page not found."})
+		core.WriteResponse(c, errno.ErrPageNotFound, nil)
 	})
 
 	g.GET("/healthz", func(c *gin.Context) {
 		log.C(c).Infow("Healthz function called")
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		core.WriteResponse(c, nil, map[string]string{"status": "ok"})
 	})
 
 	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
@@ -94,10 +96,10 @@ func run() error {
 		}
 	}()
 
-	quit := make(chan os.Signal,1)
+	quit := make(chan os.Signal, 1)
 	// SIGKILL 信号，不能被捕获，所以不需要添加
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM) 
-	<-quit                                               
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
 	log.Infow("Shutting down server ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

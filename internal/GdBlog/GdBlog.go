@@ -72,6 +72,10 @@ Find more Gd-Blog information at:
 }
 
 func run() error {
+	if err := initStore(); err != nil {
+		return err
+	}
+
 	gin.SetMode(viper.GetString("runmode"))
 
 	g := gin.New()

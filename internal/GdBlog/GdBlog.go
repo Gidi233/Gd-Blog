@@ -15,8 +15,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Gidi233/Gd-Blog/internal/pkg/core"
-	"github.com/Gidi233/Gd-Blog/internal/pkg/errno"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
@@ -83,15 +81,9 @@ func run() error {
 	mws := []gin.HandlerFunc{gin.Recovery(), mw.NoCache, mw.Cors, mw.Secure, mw.RequestID()}
 	g.Use(mws...)
 
-	g.NoRoute(func(c *gin.Context) {
-		core.WriteResponse(c, errno.ErrPageNotFound, nil)
-	})
-
-	g.GET("/healthz", func(c *gin.Context) {
-		log.C(c).Infow("Healthz function called")
-		core.WriteResponse(c, nil, map[string]string{"status": "ok"})
-	})
-
+	if err := installRouters(g); err != nil {
+		return err
+	}
 	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
 
 	go func() {

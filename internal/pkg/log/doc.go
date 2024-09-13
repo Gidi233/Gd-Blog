@@ -3,4 +3,4 @@
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/Gidi233/Gd-Blog.
 
-package log // import "github.com/marmotedu/miniblog/internal/pkg/log"
+package log

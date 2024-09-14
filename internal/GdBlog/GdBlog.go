@@ -15,8 +15,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Gidi233/Gd-Blog/internal/pkg/known"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
+	"github.com/Gidi233/Gd-Blog/pkg/token"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -60,7 +62,7 @@ Find more Gd-Blog information at:
 
 	cobra.OnInitialize(initConfig)
 
-	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "The path to the miniblog configuration file. Empty string for no configuration file.")
+	cmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "The path to the Gd-Blog configuration file. Empty string for no configuration file.")
 
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
@@ -73,6 +75,8 @@ func run() error {
 	if err := initStore(); err != nil {
 		return err
 	}
+
+	token.Init(viper.GetString("jwt-secret"), known.XUsernameKey)
 
 	gin.SetMode(viper.GetString("runmode"))
 

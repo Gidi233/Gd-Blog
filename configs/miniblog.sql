@@ -6,7 +6,7 @@
 
 -- MariaDB dump 10.19  Distrib 10.5.17-MariaDB, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: miniblog
+-- Host: 127.0.0.1    Database: blog
 -- ------------------------------------------------------
 -- Server version	10.5.17-MariaDB
 
@@ -22,14 +22,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `miniblog`
+-- Current Database: `blog`
 --
 
-/*!40000 DROP DATABASE IF EXISTS `miniblog`*/;
+/*!40000 DROP DATABASE IF EXISTS `blog`*/;
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `miniblog` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `blog` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `miniblog`;
+USE `blog`;
 
 --
 -- Table structure for table `post`

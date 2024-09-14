@@ -8,4 +8,6 @@ package known
 const (
 	// Gin ctx 中请求的 uuid的键
 	XRequestIDKey = "X-Request-ID"
+	// XUsernameKey 是Gin ctx 中请求的所有者的key.
+	XUsernameKey = "X-Username"
 )

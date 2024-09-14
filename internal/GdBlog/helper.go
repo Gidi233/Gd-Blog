@@ -45,7 +45,7 @@ func initConfig() {
 
 	viper.AutomaticEnv()
 
-	viper.SetEnvPrefix("MINIBLOG")
+	viper.SetEnvPrefix("Gd-Blog")
 
 	replacer := strings.NewReplacer(".", "_", "-", "_")
 	viper.SetEnvKeyReplacer(replacer)
@@ -68,7 +68,7 @@ func logOptions() *log.Options {
 	}
 }
 
-// 创建 gorm.DB 实例，并初始化 miniblog store 层.
+// 创建 gorm.DB 实例，并初始化 Gd-Blog store 层.
 func initStore() error {
 	dbOptions := &db.MySQLOptions{
 		Host:                  viper.GetString("db.host"),

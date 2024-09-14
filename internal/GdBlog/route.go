@@ -13,9 +13,10 @@ import (
 	"github.com/Gidi233/Gd-Blog/internal/pkg/core"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/errno"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
+	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
 )
 
-// installRouters 安装 miniblog 接口路由.
+// installRouters 安装 Gd-Blog 接口路由.
 func installRouters(g *gin.Engine) error {
 	// 注册 404 Handler.
 	g.NoRoute(func(c *gin.Context) {
@@ -30,12 +31,15 @@ func installRouters(g *gin.Engine) error {
 	})
 
 	uc := user.New(store.S)
+	g.POST("/login", uc.Login)
 
 	v1 := g.Group("/v1")
 	{
 		userv1 := v1.Group("/users")
 		{
 			userv1.POST("", uc.Create)
+			userv1.PUT(":name/change-password", uc.ChangePassword)
+			userv1.Use(mw.Authn())
 		}
 	}
 

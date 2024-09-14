@@ -15,7 +15,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// Logger 定义了 miniblog 项目的日志接口. 该接口只包含了支持的日志记录方法.
+// Logger 定义了 Gd-Blog 项目的日志接口. 该接口只包含了支持的日志记录方法.
 type Logger interface {
 	Debugw(msg string, keysAndValues ...interface{})
 	Infow(msg string, keysAndValues ...interface{})
@@ -155,6 +155,9 @@ func (l *zapLogger) C(ctx context.Context) *zapLogger {
 		lc.z = lc.z.With(zap.Any(known.XRequestIDKey, requestID))
 	}
 
+	if userID := ctx.Value(known.XUsernameKey); userID != nil {
+		lc.z = lc.z.With(zap.Any(known.XUsernameKey, userID))
+	}
 	return lc
 }
 

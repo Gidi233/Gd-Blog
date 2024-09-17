@@ -88,13 +88,11 @@ func run() error {
 	if err := installRouters(g); err != nil {
 		return err
 	}
-	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
+	// 创建并运行 HTTP 服务器
+	httpsrv := startInsecureServer(g)
 
-	go func() {
-		if err := httpsrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalw(err.Error())
-		}
-	}()
+	// 创建并运行 HTTPS 服务器
+	httpssrv := startSecureServer(g)
 
 	quit := make(chan os.Signal, 1)
 	// SIGKILL 信号，不能被捕获，所以不需要添加
@@ -109,8 +107,43 @@ func run() error {
 		log.Errorw("Insecure Server forced to shutdown", "err", err)
 		return err
 	}
+	if err := httpssrv.Shutdown(ctx); err != nil {
+		log.Errorw("Secure Server forced to shutdown", "err", err)
+		return err
+	}
 
 	log.Infow("Server exiting")
 
 	return nil
+}
+
+// startInsecureServer 创建并运行 HTTP 服务器.
+func startInsecureServer(g *gin.Engine) *http.Server {
+	httpsrv := &http.Server{Addr: viper.GetString("addr"), Handler: g}
+
+	log.Infow("Start to listening the incoming requests on http address", "addr", viper.GetString("addr"))
+	go func() {
+		if err := httpsrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalw(err.Error())
+		}
+	}()
+
+	return httpsrv
+}
+
+// startSecureServer 创建并运行 HTTPS 服务器.
+func startSecureServer(g *gin.Engine) *http.Server {
+	httpssrv := &http.Server{Addr: viper.GetString("tls.addr"), Handler: g}
+
+	log.Infow("Start to listening the incoming requests on https address", "addr", viper.GetString("tls.addr"))
+	cert, key := viper.GetString("tls.cert"), viper.GetString("tls.key")
+	if cert != "" && key != "" {
+		go func() {
+			if err := httpssrv.ListenAndServeTLS(cert, key); err != nil && !errors.Is(err, http.ErrServerClosed) {
+				log.Fatalw(err.Error())
+			}
+		}()
+	}
+
+	return httpssrv
 }

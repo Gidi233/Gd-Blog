@@ -27,3 +27,9 @@ log:
   output-paths: [/tmp/Gd-Blog.log, stdout] # 指定日志输出位置，多个输出，用 `逗号 + 空格` 分开。stdout：标准输出，
 
 jwt-secret: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5 # JWT 签发密钥
+
+# HTTPS 服务器相关配置
+tls:
+  addr: :8443 # HTTPS 服务器监听地址
+  cert: ./_output/cert/server.crt # 证书
+  key: ./_output/cert/server.key # 证书 Key 文件

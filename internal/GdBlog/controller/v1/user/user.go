@@ -9,12 +9,14 @@ import (
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/biz"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/store"
 	"github.com/Gidi233/Gd-Blog/pkg/auth"
+	pb "github.com/Gidi233/Gd-Blog/pkg/proto/GdBlog/v1"
 )
 
 // UserController 是 user 模块在 Controller 层的实现，用来处理用户模块的请求.
 type UserController struct {
 	a *auth.Authz
 	b biz.IBiz
+	pb.UnimplementedGdBlogServer
 }
 
 func New(ds store.IStore, a *auth.Authz) *UserController {

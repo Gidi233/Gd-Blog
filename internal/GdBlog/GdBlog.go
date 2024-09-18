@@ -9,15 +9,22 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"google.golang.org/grpc"
+
+	"github.com/Gidi233/Gd-Blog/internal/GdBlog/controller/v1/user"
+	"github.com/Gidi233/Gd-Blog/internal/GdBlog/store"
+
 	"github.com/Gidi233/Gd-Blog/internal/pkg/known"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
+	pb "github.com/Gidi233/Gd-Blog/pkg/proto/GdBlog/v1"
 	"github.com/Gidi233/Gd-Blog/pkg/token"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
 	"github.com/gin-gonic/gin"
@@ -94,6 +101,9 @@ func run() error {
 	// 创建并运行 HTTPS 服务器
 	httpssrv := startSecureServer(g)
 
+	// 创建并运行 GRPC 服务器
+	grpcsrv := startGRPCServer()
+
 	quit := make(chan os.Signal, 1)
 	// SIGKILL 信号，不能被捕获，所以不需要添加
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
@@ -111,6 +121,8 @@ func run() error {
 		log.Errorw("Secure Server forced to shutdown", "err", err)
 		return err
 	}
+
+	grpcsrv.GracefulStop()
 
 	log.Infow("Server exiting")
 
@@ -146,4 +158,24 @@ func startSecureServer(g *gin.Engine) *http.Server {
 	}
 
 	return httpssrv
+}
+
+// startGRPCServer 创建并运行 GRPC 服务器.
+func startGRPCServer() *grpc.Server {
+	lis, err := net.Listen("tcp", viper.GetString("grpc.addr"))
+	if err != nil {
+		log.Fatalw("Failed to listen", "err", err)
+	}
+
+	grpcsrv := grpc.NewServer()
+	pb.RegisterGdBlogServer(grpcsrv, user.New(store.S, nil))
+
+	log.Infow("Start to listening the incoming requests on grpc address", "addr", viper.GetString("grpc.addr"))
+	go func() {
+		if err := grpcsrv.Serve(lis); err != nil {
+			log.Fatalw(err.Error())
+		}
+	}()
+
+	return grpcsrv
 }

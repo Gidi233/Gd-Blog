@@ -28,6 +28,8 @@ type UserBiz interface {
 	Create(ctx context.Context, r *v1.CreateUserRequest) error
 	Get(ctx context.Context, username string) (*v1.GetUserResponse, error)
 	List(ctx context.Context, offset, limit int) (*v1.ListUserResponse, error)
+	Update(ctx context.Context, username string, r *v1.UpdateUserRequest) error
+	Delete(ctx context.Context, username string) error
 }
 
 type userBiz struct {
@@ -133,4 +135,39 @@ func (b *userBiz) List(ctx context.Context, offset, limit int) (*v1.ListUserResp
 	log.C(ctx).Debugw("Get users from backend storage", "count", len(users))
 
 	return &v1.ListUserResponse{TotalCount: count, Users: users}, nil
+}
+
+// Update 是 UserBiz 接口中 `Update` 方法的实现.
+func (b *userBiz) Update(ctx context.Context, username string, user *v1.UpdateUserRequest) error {
+	userM, err := b.ds.Users().Get(ctx, username)
+	if err != nil {
+		return err
+	}
+
+	if user.Email != nil {
+		userM.Email = *user.Email
+	}
+
+	if user.Nickname != nil {
+		userM.Nickname = *user.Nickname
+	}
+
+	if user.Phone != nil {
+		userM.Phone = *user.Phone
+	}
+
+	if err := b.ds.Users().Update(ctx, userM); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Delete 是 UserBiz 接口中 `Delete` 方法的实现.
+func (b *userBiz) Delete(ctx context.Context, username string) error {
+	if err := b.ds.Users().Delete(ctx, username); err != nil {
+		return err
+	}
+
+	return nil
 }

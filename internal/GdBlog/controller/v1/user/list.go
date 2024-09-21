@@ -7,13 +7,38 @@ package user
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/Gidi233/Gd-Blog/internal/pkg/core"
+	"github.com/Gidi233/Gd-Blog/internal/pkg/errno"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
+	v1 "github.com/Gidi233/Gd-Blog/pkg/api/GdBlog/v1"
 	pb "github.com/Gidi233/Gd-Blog/pkg/proto/GdBlog/v1"
 )
+
+// List 返回用户列表，只有 root 用户才能获取用户列表.
+func (ctrl *UserController) List(c *gin.Context) {
+	log.C(c).Infow("List user function called")
+
+	var r v1.ListUserRequest
+	if err := c.ShouldBindQuery(&r); err != nil {
+		core.WriteResponse(c, errno.ErrBind, nil)
+
+		return
+	}
+
+	resp, err := ctrl.b.Users().List(c, r.Offset, r.Limit)
+	if err != nil {
+		core.WriteResponse(c, err, nil)
+
+		return
+	}
+
+	core.WriteResponse(c, nil, resp)
+}
 
 // ListUser 返回用户列表，只有 root 用户才能获取用户列表.
 func (ctrl *UserController) ListUser(ctx context.Context, r *pb.ListUserRequest) (*pb.ListUserResponse, error) {

@@ -7,6 +7,10 @@ package model
 
 import (
 	"time"
+
+	"gorm.io/gorm"
+
+	"github.com/Gidi233/Gd-Blog/pkg/util/id"
 )
 
 // PostM 是数据库中 post 记录 struct 格式的映射.
@@ -23,4 +27,11 @@ type PostM struct {
 // TableName 用来指定映射的 MySQL 表名.
 func (p *PostM) TableName() string {
 	return "post"
+}
+
+// BeforeCreate 在创建数据库记录之前生成 postID.
+func (p *PostM) BeforeCreate(tx *gorm.DB) error {
+	p.PostID = "post-" + id.GenShortID()
+
+	return nil
 }

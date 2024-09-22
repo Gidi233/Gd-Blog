@@ -6,11 +6,13 @@
 package biz
 
 import (
+	"github.com/Gidi233/Gd-Blog/internal/GdBlog/biz/post"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/biz/user"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/store"
 )
 
 type IBiz interface {
+	Posts() post.PostBiz
 	Users() user.UserBiz
 }
 
@@ -28,4 +30,8 @@ func NewBiz(ds store.IStore) *biz {
 
 func (b *biz) Users() user.UserBiz {
 	return user.New(b.ds)
+}
+
+func (b *biz) Posts() post.PostBiz {
+	return post.New(b.ds)
 }

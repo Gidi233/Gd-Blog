@@ -5,6 +5,8 @@
 
 package biz
 
+//go:generate mockgen -destination mock_biz.go -package biz github.com/Gidi233/Gd-Blog/internal/GdBlog/biz IBiz
+
 import (
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/biz/post"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/biz/user"

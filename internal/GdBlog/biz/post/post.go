@@ -5,6 +5,8 @@
 
 package post
 
+//go:generate mockgen -destination mock_post.go -package post github.com/Gidi233/Gd-Blog/internal/GdBlog/biz/post PostBiz
+
 import (
 	"context"
 	"errors"

@@ -5,6 +5,8 @@
 
 package store
 
+//go:generate mockgen -destination mock_store.go -package store github.com/Gidi233/Gd-Blog/internal/GdBlog/store IStore,UserStore,PostStore
+
 import (
 	"sync"
 

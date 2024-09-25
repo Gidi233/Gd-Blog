@@ -389,24 +389,24 @@ func BenchmarkListUser(b *testing.B) {
 	}
 }
 
-// func BenchmarkListWithBadPerformance(b *testing.B) {
-// 	ctrl := gomock.NewController(b)
-// 	defer ctrl.Finish()
+func BenchmarkListWithBadPerformance(b *testing.B) {
+	ctrl := gomock.NewController(b)
+	defer ctrl.Finish()
 
-// 	// 构造期望的返回结果
-// 	fakeUsers := []*model.UserM{fakeUser(1), fakeUser(2), fakeUser(3)}
-// 	mockUserStore := store.NewMockUserStore(ctrl)
-// 	mockUserStore.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).Return(int64(5), fakeUsers, nil).AnyTimes()
+	// 构造期望的返回结果
+	fakeUsers := []*model.UserM{fakeUser(1), fakeUser(2), fakeUser(3)}
+	mockUserStore := store.NewMockUserStore(ctrl)
+	mockUserStore.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).Return(int64(5), fakeUsers, nil).AnyTimes()
 
-// 	mockPostStore := store.NewMockPostStore(ctrl)
-// 	mockPostStore.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(int64(10), nil, nil).AnyTimes()
+	mockPostStore := store.NewMockPostStore(ctrl)
+	mockPostStore.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(int64(10), nil, nil).AnyTimes()
 
-// 	mockStore := store.NewMockIStore(ctrl)
-// 	mockStore.EXPECT().Users().Return(mockUserStore).AnyTimes()
-// 	mockStore.EXPECT().Posts().Return(mockPostStore).AnyTimes()
+	mockStore := store.NewMockIStore(ctrl)
+	mockStore.EXPECT().Users().Return(mockUserStore).AnyTimes()
+	mockStore.EXPECT().Posts().Return(mockPostStore).AnyTimes()
 
-// 	ub := New(mockStore)
-// 	for i := 0; i < b.N; i++ {
-// 		_, _ = ub.ListWithBadPerformance(context.TODO(), 0, 0)
-// 	}
-// }
+	ub := New(mockStore)
+	for i := 0; i < b.N; i++ {
+		_, _ = ub.ListWithBadPerformance(context.TODO(), 0, 0)
+	}
+}

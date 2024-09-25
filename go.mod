@@ -9,6 +9,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/casbin/casbin/v2 v2.100.0
 	github.com/casbin/gorm-adapter/v3 v3.28.0
+	github.com/gin-contrib/pprof v1.5.0
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang/mock v1.4.4
@@ -24,6 +25,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.26.0
+	golang.org/x/sync v0.8.0
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.34.2
 	gorm.io/driver/mysql v1.5.7

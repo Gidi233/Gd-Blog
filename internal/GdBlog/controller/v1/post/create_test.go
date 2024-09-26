@@ -43,7 +43,7 @@ func TestPostController_Create(t *testing.T) {
 	mockBiz.EXPECT().Posts().AnyTimes().Return(mockPostBiz)
 
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
-	body := bytes.NewBufferString(`{"title":"miniblog installation guide","content":"The installation method is coming."}`)
+	body := bytes.NewBufferString(`{"title":"GdBlog installation guide","content":"The installation method is coming."}`)
 	c.Request, _ = http.NewRequest("POST", "/v1/posts", body)
 	c.Request.Header.Set("Content-Type", "application/json")
 

@@ -310,7 +310,7 @@ func Test_userBiz_ChangePassword(t *testing.T) {
 		{
 			name:   "default",
 			fields: fields{mockStore},
-			args:   args{context.Background(), "belm", &v1.ChangePasswordRequest{"miniblog1234", "miniblog12345"}},
+			args:   args{context.Background(), "belm", &v1.ChangePasswordRequest{"GdBlog1234", "GdBlog12345"}},
 		},
 	}
 	for _, tt := range tests {
@@ -351,7 +351,7 @@ func Test_userBiz_Login(t *testing.T) {
 		{
 			name:   "default",
 			fields: fields{mockStore},
-			args:   args{context.Background(), &v1.LoginRequest{Username: "belm", Password: "miniblog1234"}},
+			args:   args{context.Background(), &v1.LoginRequest{Username: "belm", Password: "GdBlog1234"}},
 			want:   errno.ErrPasswordIncorrect,
 		},
 	}

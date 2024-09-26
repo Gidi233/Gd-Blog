@@ -11,21 +11,21 @@
 API 性能测试脚本，会自动执行 wrk 命令，采集数据、分析数据并调用 gnuplot 画图
 
 使用方式 ( 测试 API 性能)：
-1. 启动 miniblog (8080端口)
+1. 启动 GdBlog (8080端口)
 2. 执行测试脚本: ./wrktest.sh
 
 脚本会生成 .dat 的数据文件，每列含义为：并发数 QPS 平均响应时间 成功率
 
 使用方式 (对比2次测试结果)
 1. 性能测试：./wrktest.sh http://127.0.0.1:8080/healthz
-2. 执行命令： ./wrktest.sh diff miniblog.dat http.dat
+2. 执行命令： ./wrktest.sh diff GdBlog.dat http.dat
 
 > Note: 需要确保系统安装了 wrk 和 gnuplot 工具
 EOF
 
 mbroot="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 wrkdir="${mbroot}/_output/wrk"
-jobname="miniblog"
+jobname="GdBlog"
 duration="300s"
 threads=$((3 * `grep -c processor /proc/cpuinfo`))
 
@@ -50,7 +50,7 @@ Performance automation test script.
 
 OPTIONS:
   -h                     Usage information
-  -n                     Performance test task name, default: miniblog
+  -n                     Performance test task name, default: GdBlog
   -d                     Directory used to store performance data and gnuplot graphic, default: _output/wrk
 
 Reprot bugs to <colin404@foxmail.com>.

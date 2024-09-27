@@ -161,7 +161,7 @@ func (l *zapLogger) C(ctx context.Context) *zapLogger {
 	return lc
 }
 
-// 深拷贝
+// 深拷贝.
 func (l *zapLogger) clone() *zapLogger {
 	lc := *l
 	return &lc

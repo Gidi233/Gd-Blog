@@ -18,7 +18,7 @@ type ErrResponse struct {
 	// 错误码.
 	Code string `json:"code"`
 
-	//错误信息.
+	// 错误信息.
 	Message string `json:"message"`
 }
 

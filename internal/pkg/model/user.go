@@ -26,13 +26,13 @@ type UserM struct {
 }
 
 // TableName 用来指定映射的 MySQL 表名.
+
 func (u *UserM) TableName() string {
 	return "user"
 }
 
 // BeforeCreate 在创建数据库记录之前加密明文密码.
 func (u *UserM) BeforeCreate(tx *gorm.DB) (err error) {
-
 	u.Password, err = auth.Encrypt(u.Password)
 	if err != nil {
 		return err

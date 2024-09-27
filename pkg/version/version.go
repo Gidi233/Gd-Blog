@@ -39,6 +39,7 @@ func (info Info) String() string {
 
 	return info.GitVersion
 }
+
 func (info Info) ToJSON() string {
 	s, _ := json.Marshal(info)
 

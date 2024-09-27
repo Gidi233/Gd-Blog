@@ -54,10 +54,9 @@ func initConfig() {
 		log.Errorw("Failed to read viper configuration file", "err", err)
 	}
 	log.Debugw("Using config file", "file", viper.ConfigFileUsed())
-
 }
 
-// logOptions 从 viper 中读取日志配置
+// logOptions 从 viper 中读取日志配置.
 func logOptions() *log.Options {
 	return &log.Options{
 		DisableCaller:     viper.GetBool("log.disable-caller"),

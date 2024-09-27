@@ -9,7 +9,6 @@ import (
 	"context"
 	"errors"
 	"regexp"
-
 	"sync"
 
 	"github.com/jinzhu/copier"

@@ -66,7 +66,7 @@ func (v *versionValue) Set(s string) error {
 	return err
 }
 
-// 实现了 pflag.Value 接口中的 Type
+// 实现了 pflag.Value 接口中的 Type.
 func (v *versionValue) Type() string {
 	return "version"
 }

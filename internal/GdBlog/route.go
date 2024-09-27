@@ -32,7 +32,7 @@ func installRouters(g *gin.Engine) error {
 
 		core.WriteResponse(c, nil, map[string]string{"status": "ok"})
 	})
-	// 生成profile 数据是会损耗性能的，生产环境不建议一直开启，可以在需要分析的时候临时采集那个时刻的数据，如通过监听系统信号的方式开启/关闭pprof
+	// 生成profile 数据是会损耗性能的，生产环境不建议一直开启，可以在需要分析的时候新建一个 httpserver 临时采集那个时刻的数据，如通过监听系统信号的方式开启/关闭pprof
 	pprof.Register(g)
 
 	authz, err := auth.NewAuthz(store.S.DB())

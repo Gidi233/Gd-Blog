@@ -20,7 +20,7 @@ func NoCache(c *gin.Context) {
 	c.Next()
 }
 
-// 给 options 请求的返回头设置浏览器跨域
+// 给 options 请求的返回头设置浏览器跨域.
 func Cors(c *gin.Context) {
 	if c.Request.Method != "OPTIONS" {
 		c.Next()

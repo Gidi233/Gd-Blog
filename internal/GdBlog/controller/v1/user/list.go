@@ -7,8 +7,9 @@ package user
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 

@@ -1,0 +1,12 @@
+[Unit]
+Description=APIServer for blog platform.
+Documentation=https://github.com/Gidi233/Gd-Blog/blob/master/init/README.md
+
+[Service]
+ExecStart=/opt/Gd-Blog/bin/Gd-Blog --config=/etc/Gd-Blog/Gd-Blog.yaml
+Restart=always
+RestartSec=5
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target

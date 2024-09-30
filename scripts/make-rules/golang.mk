@@ -62,7 +62,7 @@ go.test: ## 执行单元测试.
 	@mkdir -p $(OUTPUT_DIR)
 	@set -o pipefail;$(GO) test -race -cover -coverprofile=$(OUTPUT_DIR)/coverage.out -timeout=10m -shuffle=on -short -v `go list ./...`
 	@sed -i '/mock_.*.go/d' $(OUTPUT_DIR)/coverage.out # 从 coverage 中删除mock_.*.go 文件
-	@sed -i '/internal\/miniblog\/store\/.*.go/d' $(OUTPUT_DIR)/coverage.out # internal/miniblog/store/ 下的 Go 代码不参与覆盖率计算（这部分测试用例稍后补上）
+	@sed -i '/internal\/Gd-Blog\/store\/.*.go/d' $(OUTPUT_DIR)/coverage.out # internal/Gd-Blog/store/ 下的 Go 代码不参与覆盖率计算（这部分测试用例稍后补上）
 
 .PHONY: go.cover
 go.cover: go.test ## 执行单元测试，并校验覆盖率阈值.

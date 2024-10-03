@@ -6,9 +6,10 @@
 package GdBlog
 
 import (
-	"github.com/Gidi233/Gd-Blog/internal/GdBlog/controller/v1/post"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+
+	"github.com/Gidi233/Gd-Blog/internal/GdBlog/controller/v1/post"
 
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/controller/v1/user"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/store"

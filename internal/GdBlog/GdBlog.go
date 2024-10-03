@@ -21,15 +21,16 @@ import (
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/controller/v1/user"
 	"github.com/Gidi233/Gd-Blog/internal/GdBlog/store"
 
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+
 	"github.com/Gidi233/Gd-Blog/internal/pkg/known"
 	"github.com/Gidi233/Gd-Blog/internal/pkg/log"
 	mw "github.com/Gidi233/Gd-Blog/internal/pkg/middleware"
 	pb "github.com/Gidi233/Gd-Blog/pkg/proto/GdBlog/v1"
 	"github.com/Gidi233/Gd-Blog/pkg/token"
 	"github.com/Gidi233/Gd-Blog/pkg/version/verflag"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var cfgFile string
